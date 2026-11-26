@@ -45,7 +45,7 @@ def main():
     counts.append(("After removing duplicate offense_id", df.count()))
 
     # 2. Rows without a date.
-    df = df.withColumn("ts", F.to_timestamp("offense_date"))
+    df = df.withColumn("ts", F.expr("try_cast(offense_date AS TIMESTAMP)"))  # bad dates -> NULL
     df = df.filter(F.col("ts").isNotNull())
     counts.append(("After removing rows without a date", df.count()))
 
@@ -54,10 +54,11 @@ def main():
     df = df.filter(F.col("neighbourhood").isNotNull() & ~F.col("neighbourhood").isin(MISSING))
     counts.append(("After removing rows without a neighbourhood", df.count()))
 
-    # 4. Rows without valid coordinates (Seattle uses -1 or 0 for redacted locations).
+    # 4. Rows without valid coordinates. Seattle uses "REDACTED", -1 or 0 for hidden
+    #    locations; try_cast turns any text that isn't a number into NULL.
     df = (
-        df.withColumn("lat", F.col("latitude").cast("double"))
-          .withColumn("lon", F.col("longitude").cast("double"))
+        df.withColumn("lat", F.expr("try_cast(latitude AS DOUBLE)"))
+          .withColumn("lon", F.expr("try_cast(longitude AS DOUBLE)"))
     )
     df = df.filter(
         F.col("lat").isNotNull() & F.col("lon").isNotNull()

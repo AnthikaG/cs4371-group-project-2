@@ -1,0 +1,21 @@
+Task 1 summary: Seattle incident reports, 2022-2024
+
+Row counts after each cleaning step:
+  Raw rows downloaded: 253,645
+  After removing duplicate offense_id: 253,645  (removed 0)
+  After removing rows without a date: 253,645  (removed 0)
+  After removing rows without a neighbourhood: 251,320  (removed 2,325)
+  After removing rows without valid coordinates: 216,936  (removed 34,384)
+  After keeping only incidents inside Seattle: 216,887  (removed 49)
+
+Number of neighbourhoods: 58
+Date range of cleaned incidents: 2022-01-01 00:00 to 2024-12-31 23:55
+Rows in neighbourhood_month table: 2,088 (58 neighbourhoods x 36 months)
+
+Category mapping (nibrs_crime_against_category -> category: incidents):
+  NOT_A_CRIME -> other: 15,189
+  SOCIETY -> other: 9,997
+  ANY -> other: 6,429
+  - -> other: 129
+  PERSON -> persons: 22,319
+  PROPERTY -> property: 162,824
