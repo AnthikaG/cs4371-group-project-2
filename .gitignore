@@ -221,3 +221,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SafeStay
+.env
+data/raw/
+cache/
+.DS_Store
